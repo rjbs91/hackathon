@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/dropWithMenu/core/core.iml" filepath="$PROJECT_DIR$/dropWithMenu/core/core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dropWithMenu/desktop/desktop.iml" filepath="$PROJECT_DIR$/dropWithMenu/desktop/desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/dropWithMenu/html/html.iml" filepath="$PROJECT_DIR$/dropWithMenu/html/html.iml" />
+    </modules>
+  </component>
+</project>
