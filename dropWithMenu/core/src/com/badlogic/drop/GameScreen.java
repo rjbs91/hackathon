@@ -10,11 +10,20 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthoCachedTiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+
+import javax.swing.*;
 
 public class GameScreen implements Screen {
     final Drop game;
@@ -29,41 +38,41 @@ public class GameScreen implements Screen {
     long lastDropTime;
     int dropsGathered;
 
-    Texture map;
-
+    TiledMap mapTile;
+    OrthogonalTiledMapRenderer rederer;
 
     boolean jump;
+    boolean canJump;
 
     public GameScreen(final Drop game) {
+
+
+        TmxMapLoader loader = new TmxMapLoader();
+
+        mapTile = loader.load("testmap.tmx");
+
+        rederer = new OrthogonalTiledMapRenderer(mapTile);
+
         this.game = game;
+
 
         // load the images for the droplet and the bucket, 64x64 pixels each
         dropImage = new Texture(Gdx.files.internal("droplet.png"));
         bucketImage = new Texture(Gdx.files.internal("bucket.png"));
 
-        map = new Texture(Gdx.files.internal("map.jpg"));
-
-        game.batch.begin();
-        game.batch.draw(map, 0, 0);
-        game.batch.end();
 
         // load the drop sound effect and the rain background "music"
         //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         //rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
         //rainMusic.setLooping(true);
 
-        // create the camera and the SpriteBatch
-        //camera = new OrthographicCamera();
-        //camera.setToOrtho(false, 800, 480);
-
         camera = new OrthographicCamera(800, 480);
-
         camera.update();
 
         // create a Rectangle to logically represent the bucket
         bucket = new Rectangle();
         bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
-        bucket.y = 20; // bottom left corner of the bucket is 20 pixels above
+        bucket.y = 50; // bottom left corner of the bucket is 20 pixels above
         // the bottom screen edge
         bucket.width = 64;
         bucket.height = 64;
@@ -93,6 +102,8 @@ public class GameScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0.2f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        rederer.setView(camera);
+        rederer.render();
         // tell the camera to update its matrices.
 
         // tell the SpriteBatch to render in the
@@ -102,8 +113,6 @@ public class GameScreen implements Screen {
         // begin a new batch and draw the bucket and
         // all drops
         game.batch.begin();
-
-        game.batch.draw(map, 0, 0);
 
         game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
 
@@ -115,7 +124,6 @@ public class GameScreen implements Screen {
         }
 
         game.batch.end();
-
 
 
         // process user input
@@ -134,10 +142,10 @@ public class GameScreen implements Screen {
             bucket.x += 500 * Gdx.graphics.getDeltaTime();
         }
 
-        if (Gdx.input.isKeyPressed(Keys.SPACE) && bucket.y == 0) {
+        if (Gdx.input.isKeyJustPressed(Keys.SPACE) && canJump) {
             jump = true;
+            canJump = false;
         }
-
 
         if (jump) {
             bucket.y += 500 * delta;
@@ -146,23 +154,32 @@ public class GameScreen implements Screen {
         }
 
         // make sure the bucket stays within the screen bounds
-        if (bucket.x < 0) {
-            bucket.x = 0;
-        }
 
         /*
         if (bucket.x > 800 - 64) {
             bucket.x = 800 - 64;
-        }*/
-
-        if (bucket.y < 0) {
-            jump = false;
-            bucket.y = 0;
         }
 
-        if (bucket.y >= 200) {
-            jump = false;
-            bucket.y = 200;
+        */
+        if (bucket.y < 0) {
+            return;
+        }
+
+
+
+
+        for (MapObject object : mapTile.getLayers().get(1).getObjects().getByType(RectangleMapObject.class)) {
+
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+
+            if (bucket.overlaps(rect)) {
+                bucket.y = rect.y + rect.height;
+                canJump = true;
+            }
+            if (bucket.y >= rect.y + 200) {
+                jump = false;
+                bucket.y = rect.y + 200;
+            }
         }
 
         camera.position.set(bucket.x, camera.viewportHeight / 2f, 0);
