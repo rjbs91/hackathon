@@ -29,6 +29,8 @@ public class GameScreen implements Screen {
     long lastDropTime;
     int dropsGathered;
 
+    boolean jump;
+
     public GameScreen(final Drop game) {
         this.game = game;
 
@@ -112,10 +114,15 @@ public class GameScreen implements Screen {
         }
 
         if (Gdx.input.isKeyPressed(Keys.SPACE) && bucket.y == 0) {
-            bucket.y += 200;
+            jump = true;
         }
 
-        bucket.y -= 8;
+
+        if (jump) {
+            bucket.y += 500 * delta;
+        } else {
+            bucket.y -= 500 * delta;
+        }
 
         // make sure the bucket stays within the screen bounds
         if (bucket.x < 0) {
@@ -127,10 +134,12 @@ public class GameScreen implements Screen {
         }
 
         if (bucket.y < 0) {
+            jump = false;
             bucket.y = 0;
         }
 
         if (bucket.y >= 200) {
+            jump = false;
             bucket.y = 200;
         }
 
