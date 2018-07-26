@@ -29,6 +29,9 @@ public class GameScreen implements Screen {
     long lastDropTime;
     int dropsGathered;
 
+    Texture map;
+
+
     boolean jump;
 
     public GameScreen(final Drop game) {
@@ -38,14 +41,24 @@ public class GameScreen implements Screen {
         dropImage = new Texture(Gdx.files.internal("droplet.png"));
         bucketImage = new Texture(Gdx.files.internal("bucket.png"));
 
+        map = new Texture(Gdx.files.internal("map.jpg"));
+
+        game.batch.begin();
+        game.batch.draw(map, 0, 0);
+        game.batch.end();
+
         // load the drop sound effect and the rain background "music"
         //dropSound = Gdx.audio.newSound(Gdx.files.internal("drop.wav"));
         //rainMusic = Gdx.audio.newMusic(Gdx.files.internal("rain.mp3"));
         //rainMusic.setLooping(true);
 
         // create the camera and the SpriteBatch
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 800, 480);
+        //camera = new OrthographicCamera();
+        //camera.setToOrtho(false, 800, 480);
+
+        camera = new OrthographicCamera(800, 480);
+
+        camera.update();
 
         // create a Rectangle to logically represent the bucket
         bucket = new Rectangle();
@@ -81,7 +94,6 @@ public class GameScreen implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // tell the camera to update its matrices.
-        camera.update();
 
         // tell the SpriteBatch to render in the
         // coordinate system specified by the camera.
@@ -90,12 +102,21 @@ public class GameScreen implements Screen {
         // begin a new batch and draw the bucket and
         // all drops
         game.batch.begin();
+
+        game.batch.draw(map, 0, 0);
+
         game.font.draw(game.batch, "Drops Collected: " + dropsGathered, 0, 480);
+
         game.batch.draw(bucketImage, bucket.x, bucket.y, bucket.width, bucket.height);
+
+
         for (Rectangle raindrop : raindrops) {
             game.batch.draw(dropImage, raindrop.x, raindrop.y);
         }
+
         game.batch.end();
+
+
 
         // process user input
         if (Gdx.input.isTouched()) {
@@ -129,9 +150,10 @@ public class GameScreen implements Screen {
             bucket.x = 0;
         }
 
+        /*
         if (bucket.x > 800 - 64) {
             bucket.x = 800 - 64;
-        }
+        }*/
 
         if (bucket.y < 0) {
             jump = false;
@@ -142,6 +164,9 @@ public class GameScreen implements Screen {
             jump = false;
             bucket.y = 200;
         }
+
+        camera.position.set(bucket.x, camera.viewportHeight / 2f, 0);
+        camera.update();
 
         // check if we need to create a new raindrop
         if (TimeUtils.nanoTime() - lastDropTime > 1000000000)
