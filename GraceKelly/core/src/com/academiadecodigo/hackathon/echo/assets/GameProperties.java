@@ -14,7 +14,6 @@ public class GameProperties {
     public final static String GK_LEFT = "girl_left.png";
     public final static String NPC = "prince.png";
     public final static String MUSIC = "Mika.mp3";
-    public final static String LEVEL_1 = "level1.tmx";
 
     public final static float MOVEMENT_SPEED = 500;
 

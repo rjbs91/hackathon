@@ -1,6 +1,7 @@
 package com.academiadecodigo.hackathon.echo;
 
 import com.academiadecodigo.hackathon.echo.assets.GameProperties;
+import com.academiadecodigo.hackathon.echo.assets.Levels;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -45,12 +46,15 @@ public class GameScreen implements Screen {
 
     final int imageSize = 65;
 
-    public GameScreen(GKGame game) {
+    final Levels level;
+
+    public GameScreen(GKGame game, Levels level) {
         this.game = game;
+        this.level = level;
 
         TmxMapLoader loader = new TmxMapLoader();
 
-        mapTile = loader.load(GameProperties.LEVEL_1);
+        mapTile = loader.load(level.path);
 
         renderer = new OrthogonalTiledMapRenderer(mapTile);
 
@@ -65,7 +69,7 @@ public class GameScreen implements Screen {
 
     private void createObjects() {
         grace = GameObjectsFactory.makeObject(420, 150, imageSize);
-        objectRect = GameObjectsFactory.makeObject(2180, 95, imageSize);
+        objectRect = GameObjectsFactory.makeObject(level.keyX, level.keyY, imageSize);
         npcRect = GameObjectsFactory.makeObject(4350, 16, imageSize);
     }
 
@@ -97,7 +101,7 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
 
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         renderer.setView(camera);
@@ -135,14 +139,23 @@ public class GameScreen implements Screen {
         }
 
         if (grace.overlaps(objectRect)) {
-            objectRect.setX(3407);
-            objectRect.setY(16);
+            objectRect.setX(level.closetX);
+            objectRect.setY(level.closetY);
             objectText = closet;
         }
 
         if (grace.overlaps(npcRect)) {
-            game.setScreen(new MainMenuScreen(game));
-            dispose();
+
+            switch (level) {
+                case LEVEL_1:
+                    game.setScreen(new GameScreen(game, Levels.LEVEL_2));
+                    dispose();
+                    break;
+                default:
+                    game.setScreen(new MainMenuScreen(game));
+                    dispose();
+                    break;
+            }
         }
     }
 
@@ -151,11 +164,11 @@ public class GameScreen implements Screen {
                 grace.y + GameProperties.MOVEMENT_SPEED * delta :
                 grace.y - GameProperties.MOVEMENT_SPEED * delta;
 
-        if (grace.x < 420){
+        if (grace.x < 420) {
             grace.x = 420;
         }
 
-        if (grace.y < 0){
+        if (grace.y < 0) {
             game.setScreen(new MainMenuScreen(game));
             dispose();
         }
@@ -167,12 +180,12 @@ public class GameScreen implements Screen {
     }
 
     private void checkInputs() {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)){
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
             grace.x -= GameProperties.MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             graceImage = graceImageLeft;
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)){
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             grace.x += GameProperties.MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
             graceImage = graceImageRight;
         }

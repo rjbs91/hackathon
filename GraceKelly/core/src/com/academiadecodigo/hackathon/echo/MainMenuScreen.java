@@ -1,6 +1,7 @@
 package com.academiadecodigo.hackathon.echo;
 
 import com.academiadecodigo.hackathon.echo.assets.GameProperties;
+import com.academiadecodigo.hackathon.echo.assets.Levels;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -38,7 +39,7 @@ public class MainMenuScreen implements Screen {
         game.batch.end();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GameScreen(game, Levels.LEVEL_1));
             dispose();
         }
 
