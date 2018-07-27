@@ -1,6 +1,7 @@
 package com.badlogic.drop;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -37,7 +38,7 @@ public class MainMenuScreen implements Screen {
         game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
         game.batch.end();
 
-        if (Gdx.input.isTouched()) {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             game.setScreen(new GameScreen(game));
             dispose();
         }

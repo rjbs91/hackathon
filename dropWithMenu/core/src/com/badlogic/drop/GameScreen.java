@@ -44,6 +44,10 @@ public class GameScreen implements Screen {
     boolean jump;
     boolean canJump;
 
+    float base;
+
+    final int bucketSize = 32;
+
     public GameScreen(final Drop game) {
 
 
@@ -71,11 +75,11 @@ public class GameScreen implements Screen {
 
         // create a Rectangle to logically represent the bucket
         bucket = new Rectangle();
-        bucket.x = 800 / 2 - 64 / 2; // center the bucket horizontally
+        bucket.x = 800 / 2 - bucketSize / 2; // center the bucket horizontally
         bucket.y = 50; // bottom left corner of the bucket is 20 pixels above
         // the bottom screen edge
-        bucket.width = 64;
-        bucket.height = 64;
+        bucket.width = bucketSize;
+        bucket.height = bucketSize;
 
         // create the raindrops array and spawn the first raindrop
         raindrops = new Array<Rectangle>();
@@ -162,7 +166,8 @@ public class GameScreen implements Screen {
 
         */
         if (bucket.y < 0) {
-            return;
+            game.setScreen(new MainMenuScreen(game));
+            dispose();
         }
 
 
@@ -174,11 +179,13 @@ public class GameScreen implements Screen {
 
             if (bucket.overlaps(rect)) {
                 bucket.y = rect.y + rect.height;
+                base = bucket.y;
                 canJump = true;
             }
-            if (bucket.y >= rect.y + 200) {
+
+            if (bucket.y >= base + 150) {
+                bucket.y = base + 150;
                 jump = false;
-                bucket.y = rect.y + 200;
             }
         }
 

@@ -77,7 +77,7 @@ public class PlayScreen implements Screen{
 
         //Load our map and setup our map renderer
         maploader = new TmxMapLoader();
-        map = maploader.load("level1.tmx");
+        map = maploader.load("levelalpha.tmx");
         renderer = new OrthogonalTiledMapRenderer(map, 1  / MarioBros.PPM);
 
         //initially set our gamcam to be centered correctly at the start of of map

@@ -81,7 +81,7 @@ public class B2WorldCreator {
             goombas.add(new Goomba(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
         }
         turtles = new Array<Turtle>();
-        for(MapObject object : map.getLayers().get(7).getObjects().getByType(RectangleMapObject.class)){
+        for(MapObject object : map.getLayers().get(6).getObjects().getByType(RectangleMapObject.class)){
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             turtles.add(new Turtle(screen, rect.getX() / MarioBros.PPM, rect.getY() / MarioBros.PPM));
         }
