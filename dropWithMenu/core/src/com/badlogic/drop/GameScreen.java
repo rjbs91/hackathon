@@ -75,7 +75,7 @@ public class GameScreen implements Screen {
 
         bucket = new Rectangle();
         bucket.x = 418;
-        bucket.y = 50;
+        bucket.y = 150;
 
         bucket.width = bucketSize;
         bucket.height = bucketSize;
