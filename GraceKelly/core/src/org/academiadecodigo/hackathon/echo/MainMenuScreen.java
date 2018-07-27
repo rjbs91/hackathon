@@ -1,7 +1,7 @@
-package com.academiadecodigo.hackathon.echo;
+package org.academiadecodigo.hackathon.echo;
 
-import com.academiadecodigo.hackathon.echo.assets.GameProperties;
-import com.academiadecodigo.hackathon.echo.assets.Levels;
+import org.academiadecodigo.hackathon.echo.assets.GameProperties;
+import org.academiadecodigo.hackathon.echo.assets.Levels;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;

@@ -1,4 +1,4 @@
-package com.academiadecodigo.hackathon.echo.assets;
+package org.academiadecodigo.hackathon.echo.assets;
 
 public enum Levels {
 

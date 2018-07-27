@@ -4,8 +4,8 @@
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 	<inherits name='com.badlogic.gdx.physics.box2d.box2d-gwt' />
 
-	<inherits name='Game' />
-	<entry-point class='com.academiadecodigo.hackathon.echo.client.HtmlLauncher' />
+	<inherits name='GKGame' />
+	<entry-point class='org.academiadecodigo.hackathon.echo.client.HtmlLauncher' />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../core/assets" />
 </module>

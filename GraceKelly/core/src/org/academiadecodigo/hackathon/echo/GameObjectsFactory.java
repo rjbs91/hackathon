@@ -1,4 +1,4 @@
-package com.academiadecodigo.hackathon.echo;
+package org.academiadecodigo.hackathon.echo;
 
 import com.badlogic.gdx.math.Rectangle;
 

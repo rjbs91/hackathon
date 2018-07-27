@@ -4,8 +4,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'com.academiadecodigo.hackathon.echo.GdxDefinition'
-    devModules 'com.academiadecodigo.hackathon.echo.GdxDefinitionSuperdev'
+    modules 'org.academiadecodigo.hackathon.echo.GdxDefinition'
+    devModules 'org.academiadecodigo.hackathon.echo.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {

@@ -1,9 +1,9 @@
-package com.academiadecodigo.hackathon.echo.desktop;
+package org.academiadecodigo.hackathon.echo.desktop;
 
-import com.academiadecodigo.hackathon.echo.assets.GameProperties;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.academiadecodigo.hackathon.echo.GKGame;
+import org.academiadecodigo.hackathon.echo.GKGame;
+import org.academiadecodigo.hackathon.echo.assets.GameProperties;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {

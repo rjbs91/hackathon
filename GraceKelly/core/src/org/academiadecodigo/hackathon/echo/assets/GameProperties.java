@@ -1,7 +1,4 @@
-package com.academiadecodigo.hackathon.echo.assets;
-
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
+package org.academiadecodigo.hackathon.echo.assets;
 
 public class GameProperties {
 
@@ -14,6 +11,8 @@ public class GameProperties {
     public final static String GK_LEFT = "girl_left.png";
     public final static String GKT_RIGHT = "kelly_right.png";
     public final static String GKT_LEFT = "kelly_left.png";
+    public final static String FM_LEFT = "FreddieMercury_Left.png";
+    public final static String FM_RIGHT = "FreddieMercury_Right.png";
     public final static String NPC = "prince.png";
     public final static String MUSIC = "Mika.mp3";
 

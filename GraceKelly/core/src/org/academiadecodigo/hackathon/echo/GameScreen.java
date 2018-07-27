@@ -1,7 +1,7 @@
-package com.academiadecodigo.hackathon.echo;
+package org.academiadecodigo.hackathon.echo;
 
-import com.academiadecodigo.hackathon.echo.assets.GameProperties;
-import com.academiadecodigo.hackathon.echo.assets.Levels;
+import org.academiadecodigo.hackathon.echo.assets.GameProperties;
+import org.academiadecodigo.hackathon.echo.assets.Levels;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
@@ -94,8 +94,15 @@ public class GameScreen implements Screen {
     private void createTextures() {
         graceImageRight = new Texture(Gdx.files.internal(GameProperties.GK_RIGHT));
         graceImageLeft = new Texture(Gdx.files.internal(GameProperties.GK_LEFT));
-        graceImageRightKelly = new Texture(Gdx.files.internal(GameProperties.GKT_RIGHT));
-        graceImageLeftKelly = new Texture(Gdx.files.internal(GameProperties.GKT_LEFT));
+
+        if (level == Levels.LEVEL_1) {
+            graceImageRightKelly = new Texture(Gdx.files.internal(GameProperties.GKT_RIGHT));
+            graceImageLeftKelly = new Texture(Gdx.files.internal(GameProperties.GKT_LEFT));
+        } else {
+            graceImageRightKelly = new Texture(Gdx.files.internal(GameProperties.FM_RIGHT));
+            graceImageLeftKelly = new Texture(Gdx.files.internal(GameProperties.FM_LEFT));
+        }
+
         graceImage = graceImageRight;
 
         key = new Texture(Gdx.files.internal(GameProperties.KEY));
