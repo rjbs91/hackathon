@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -44,9 +45,16 @@ public class GameScreen implements Screen {
 
     float base;
 
-    final int imageSize = 65;
+    final int imageSize = 40;
 
     final Levels level;
+    private Texture graceImageRightKelly;
+    private Texture graceImageLeftKelly;
+
+    boolean hasKey;
+    boolean isKelly;
+    private Sound keySound;
+    private Sound suicideSound;
 
     public GameScreen(GKGame game, Levels level) {
         this.game = game;
@@ -70,10 +78,12 @@ public class GameScreen implements Screen {
     private void createObjects() {
         grace = GameObjectsFactory.makeObject(420, 150, imageSize);
         objectRect = GameObjectsFactory.makeObject(level.keyX, level.keyY, imageSize);
-        npcRect = GameObjectsFactory.makeObject(4350, 16, imageSize);
+        npcRect = GameObjectsFactory.makeObject(5182, 32, imageSize);
     }
 
     private void createMusic() {
+
+        keySound = Gdx.audio.newSound(Gdx.files.internal("keySound.wav"));
         music = Gdx.audio.newMusic(Gdx.files.internal(GameProperties.MUSIC));
         music.setLooping(true);
     }
@@ -81,6 +91,8 @@ public class GameScreen implements Screen {
     private void createTextures() {
         graceImageRight = new Texture(Gdx.files.internal(GameProperties.GK_RIGHT));
         graceImageLeft = new Texture(Gdx.files.internal(GameProperties.GK_LEFT));
+        graceImageRightKelly = new Texture(Gdx.files.internal(GameProperties.GKT_RIGHT));
+        graceImageLeftKelly = new Texture(Gdx.files.internal(GameProperties.GKT_LEFT));
         graceImage = graceImageRight;
 
         key = new Texture(Gdx.files.internal(GameProperties.KEY));
@@ -88,7 +100,6 @@ public class GameScreen implements Screen {
         objectText = key;
 
         npc = new Texture(Gdx.files.internal(GameProperties.NPC));
-
     }
 
     @Override
@@ -118,6 +129,7 @@ public class GameScreen implements Screen {
 
         checkCollision();
 
+        //System.out.println(grace.x + " " + grace.y);
     }
 
     private void checkCollision() {
@@ -139,12 +151,18 @@ public class GameScreen implements Screen {
         }
 
         if (grace.overlaps(objectRect)) {
+            keySound.play();
             objectRect.setX(level.closetX);
             objectRect.setY(level.closetY);
             objectText = closet;
+            hasKey = true;
         }
 
-        if (grace.overlaps(npcRect)) {
+        if (grace.overlaps(objectRect) && hasKey) {
+            isKelly = true;
+        }
+
+        if (grace.overlaps(npcRect) && isKelly) {
 
             switch (level) {
                 case LEVEL_1:
@@ -168,26 +186,43 @@ public class GameScreen implements Screen {
             grace.x = 420;
         }
 
+        if (grace.x > 5190) {
+            grace.x = 5190;
+        }
+
         if (grace.y < 0) {
             game.setScreen(new MainMenuScreen(game));
             dispose();
         }
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE) && canJump) {
+        if ((Gdx.input.isKeyJustPressed(Input.Keys.SPACE)
+                || Gdx.input.isKeyJustPressed(Input.Keys.W)) && canJump) {
             jump = true;
             canJump = false;
         }
     }
 
     private void checkInputs() {
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)
+                || Gdx.input.isKeyPressed(Input.Keys.A)) {
             grace.x -= GameProperties.MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
-            graceImage = graceImageLeft;
+
+            if (isKelly) {
+                graceImage = graceImageLeftKelly;
+            } else {
+                graceImage = graceImageLeft;
+            }
         }
 
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)
+                || Gdx.input.isKeyPressed(Input.Keys.D)) {
             grace.x += GameProperties.MOVEMENT_SPEED * Gdx.graphics.getDeltaTime();
-            graceImage = graceImageRight;
+
+            if (isKelly) {
+                graceImage = graceImageRightKelly;
+            } else {
+                graceImage = graceImageRight;
+            }
         }
     }
 
@@ -230,5 +265,6 @@ public class GameScreen implements Screen {
         objectText.dispose();
         npc.dispose();
         music.dispose();
+        keySound.dispose();
     }
 }

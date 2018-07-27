@@ -7,6 +7,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 
 public class MainMenuScreen implements Screen {
 
@@ -34,8 +35,10 @@ public class MainMenuScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
         game.batch.begin();
-        game.font.draw(game.batch, "Welcome!!! ", 100, 150);
-        game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
+
+        game.batch.draw(new Texture(Gdx.files.internal("MainScreen.png")), 0, 0 );
+        //game.font.draw(game.batch, "Welcome!!! ", 100, 150);
+        //game.font.draw(game.batch, "Tap anywhere to begin!", 100, 100);
         game.batch.end();
 
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {

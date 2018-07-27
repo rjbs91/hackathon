@@ -12,6 +12,8 @@ public class GameProperties {
     public final static String CLOSET = "closet.png";
     public final static String GK_RIGHT = "girl_right.png";
     public final static String GK_LEFT = "girl_left.png";
+    public final static String GKT_RIGHT = "kelly_right.png";
+    public final static String GKT_LEFT = "kelly_left.png";
     public final static String NPC = "prince.png";
     public final static String MUSIC = "Mika.mp3";
 
