@@ -183,7 +183,7 @@ public class GameScreen implements Screen {
             dispose();
         }
 
-        System.out.println(bucket.x + " " + bucket.y);
+        //System.out.println(bucket.x + " " + bucket.y);
     }
 
     @Override
@@ -210,6 +210,12 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         bucketImage.dispose();
+        bucketImageLeft.dispose();
+        bucketImageRight.dispose();
+        key.dispose();
+        closet.dispose();
+        objectText.dispose();
+        prince.dispose();
         music.dispose();
     }
 }
