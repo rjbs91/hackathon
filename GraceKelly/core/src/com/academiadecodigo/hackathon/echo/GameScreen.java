@@ -54,7 +54,8 @@ public class GameScreen implements Screen {
     boolean hasKey;
     boolean isKelly;
     private Sound keySound;
-    private Sound suicideSound;
+    private Sound kissSound;
+    private Sound teleportSound;
 
     public GameScreen(GKGame game, Levels level) {
         this.game = game;
@@ -78,12 +79,14 @@ public class GameScreen implements Screen {
     private void createObjects() {
         grace = GameObjectsFactory.makeObject(420, 150, imageSize);
         objectRect = GameObjectsFactory.makeObject(level.keyX, level.keyY, imageSize);
-        npcRect = GameObjectsFactory.makeObject(5182, 32, imageSize);
+        npcRect = GameObjectsFactory.makeObject(level.npcX, level.npcY, imageSize);
     }
 
     private void createMusic() {
 
         keySound = Gdx.audio.newSound(Gdx.files.internal("keySound.wav"));
+        kissSound = Gdx.audio.newSound(Gdx.files.internal("kiss.wav"));
+        teleportSound = Gdx.audio.newSound(Gdx.files.internal("teleport.wav"));
         music = Gdx.audio.newMusic(Gdx.files.internal(GameProperties.MUSIC));
         music.setLooping(true);
     }
@@ -159,17 +162,29 @@ public class GameScreen implements Screen {
         }
 
         if (grace.overlaps(objectRect) && hasKey) {
+            teleportSound.play();
             isKelly = true;
         }
 
         if (grace.overlaps(npcRect) && isKelly) {
 
+
             switch (level) {
                 case LEVEL_1:
+
                     game.setScreen(new GameScreen(game, Levels.LEVEL_2));
                     dispose();
                     break;
                 default:
+
+                    kissSound.play();
+
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+
                     game.setScreen(new MainMenuScreen(game));
                     dispose();
                     break;
@@ -266,5 +281,7 @@ public class GameScreen implements Screen {
         npc.dispose();
         music.dispose();
         keySound.dispose();
+        kissSound.dispose();
+        teleportSound.dispose();
     }
 }
